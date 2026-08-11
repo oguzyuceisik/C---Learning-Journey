@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+
+int main() {
+
+    double radius;
+    double area;
+    double volume;
+    double surfacearea;
+    const double PI = 3.14159;
+
+    printf("Enter the radius: ");
+    scanf("%lf", &radius);
+
+    area = PI * pow(radius, 2);
+    printf("Area: %.2f\n", area);
+
+    volume = (4.0/3.0) * PI * pow(radius, 3);
+    printf("Volume: %.2f\n", volume);
+
+    surfacearea = 4 * PI * pow(radius, 2);
+    printf("Surface Area: %.2f\n", surfacearea);
+
+    return 0;
+}
