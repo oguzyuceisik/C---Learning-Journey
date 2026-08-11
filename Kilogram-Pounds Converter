@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+
+int main() {
+
+    int choice;
+    float kilogram;
+    float pounds;
+
+    printf("Type '10' if you want to convert kilogram to pounds!\n");
+    printf("Type '11' if you want to convert pounds to kilogram!\n");
+    printf("Your choice: ");
+    scanf("%d", &choice);
+
+    if(choice == 10){
+        printf("Enter the weight in kilograms: ");
+        scanf("%f", &kilogram);
+        pounds = kilogram * 2.2;
+        printf("%f kilograms is equal to %f pounds.\n", kilogram, pounds);
+    } 
+    else if(choice == 11){
+        printf("Enter the weight in pounds: ");
+        scanf("%f", &pounds);
+        kilogram = pounds / 2.2;
+        printf("%.2f pounds is equal to %.2f kilograms.\n", pounds, kilogram);
+    } else {
+        printf("Invalid Input! Please try again!");
+    }
+    return 0;
+}
