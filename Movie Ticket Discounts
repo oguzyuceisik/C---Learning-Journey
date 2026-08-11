@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <math.h>
+#include <stdbool.h>
+#include <ctype.h>
+
+int main() {
+
+    float ticket = 100;
+    bool isStudent; //%10 discount
+    bool isSenior; //%20 discount
+    char askStudent;
+    char askSenior;
+
+    printf("Are you a Student(y/n): ");
+    scanf(" %c", &askStudent);
+    printf("Are you a Senior(y/n): ");
+    scanf(" %c", &askSenior);
+
+    switch(tolower(askStudent)){
+        case 'y':
+            isStudent = true;
+            break;
+        case 'n':
+            isStudent = false;
+            break;
+        default:
+            printf("Invalid Input\n");
+            return 1;
+    }
+
+    switch(tolower(askSenior)){
+        case 'y':
+            isSenior = true;
+            break;
+        case 'n':
+            isSenior = false;
+            break;
+        default:
+            printf("Invalid Input\n");
+            return 1;
+    }
+
+    if(isStudent == true && isSenior == true){
+        printf("You get a student and a senior discount of %%30 \n");
+        ticket = ticket * 0.7;
+    }
+    else if(isStudent == false && isSenior == true){
+        printf("You get a Senior discount of %%20 \n");
+        ticket *= 0.8;
+    } else if(isStudent == true && isSenior == false){
+        printf("You get a student discount of %%10 \n");
+        ticket *= 0.9;
+    }else{
+        printf("You are not a student nor a senior. You don't get a discount.\n");
+    }
+        
+
+    printf("The price of a ticket is: ₺%.2f\n", ticket);
+    return 0;
+}
