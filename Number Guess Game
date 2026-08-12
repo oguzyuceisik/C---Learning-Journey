@@ -23,7 +23,7 @@ int main() {
             printf("TOO LOW\n");
         }
     }
-    if(tries != 5){
+    if(tries <= 5){
         printf("YOU WIN");
     }else{
         printf("You ran out of tries. The answer was %d.\n YOU LOST\n", randomNum);
