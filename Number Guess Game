@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+
+int main() {
+
+    srand(time(NULL));
+    int min = 1;
+    int max = 100;
+    int input = 0;
+    int tries = 0;
+
+    int randomNum = rand() % (max - min +1 ) + min;
+
+    while(input != randomNum && tries != 5){
+        printf("Guess the number between 1-100: ");
+        scanf("%d", &input);
+        tries++;
+        if(input > randomNum){
+            printf("TOO HIGH\n");
+        }else if(randomNum>input){
+            printf("TOO LOW\n");
+        }
+    }
+    if(tries != 5){
+        printf("YOU WIN");
+    }else{
+        printf("You ran out of tries. The answer was %d.\n YOU LOST\n", randomNum);
+    }
+    
+
+    
+    return 0;
+}
