@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+typedef enum{
+    A,B,C,D
+
+}Class;
+
+typedef struct{
+    char name[50];
+    int age;
+    int id;
+    Class letter;
+
+}Student;
+
+void nameStudent(Student *list, int i);
+void ageStudent(Student *list, int i);
+int idStudent(int age, int i);
+void setLetter(int ids, Student *list, int i);
+
+int main() {
+    int howMany;
+    while(1){
+        printf("How many student will you enroll?: ");
+        if(scanf("%d", &howMany)==1 && howMany > 0){
+            break;
+        }
+        printf("Invalid Input! Please enter a valid number greater than 0.\n");
+    }
+
+    Student *list = malloc(howMany * sizeof(Student));
+
+    if(list==NULL){
+        printf("Memory allocation failed!\n");
+        return 1;
+    }
+
+    for(int i = 0;i<howMany; i++){
+        nameStudent( list,  i);
+        ageStudent( list, i);
+        list[i].id = idStudent(list[i].age, i);
+        setLetter( list[i].id, list, i);
+        
+    }
+
+    for(int i = 0; i<howMany; i++){
+        printf("_____STUDENTS_#%d___\n", i+1);
+        printf("Name: %s\n", list[i].name);
+        printf("Age: %d\n", list[i].age);
+        printf("ID: %d\n", list[i].id);
+        printf("Class: %c\n", list[i].letter + 'A');
+        
+    }
+
+    free(list);
+    return 0;
+}
+
+void nameStudent(Student *list, int i){
+    getchar();
+    printf("Please enter the name of Student #%d: ", i+1);
+    fgets(list[i].name, 50, stdin);
+    list[i].name[strlen(list[i].name) -1 ] = '\0';
+    }
+
+void ageStudent(Student *list, int i){
+    while(1){
+        printf("Please enter the age of Student #%d: ", i+1);
+        if(scanf(" %d", &list[i].age)==1 && list[i].age > 13 && list[i].age < 20){
+            break;
+        }
+        printf("Enter a valid age between 13 and 20.\n");
+    }
+}
+
+int idStudent(int age, int i){
+    int ids = (age * 100) + i;
+    return ids;
+
+}
+
+void setLetter(int ids, Student *list, int i){
+    int letternum = ids % 4;
+    list[i].letter = (Class)letternum;
+}
