@@ -1,0 +1,186 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+
+typedef enum{
+    hit, pass
+}Choice;
+
+void shuffle(int deck[]);
+void playerHit(int playerCards[], int *playerCardIndex, int deck[], int *cardIndex);
+void totalPoints(int playerCards[], int playerCardIndex, int *playerSum);
+void fullyRevealCards(int playerCardIndex, int playerCards[]);
+void semiRevealCards(int playerCardIndex, int playerCards[]);
+void checkAce(int playerCardIndex, int playerCards[], int *playerAce);
+
+
+int main() {
+    srand(time(NULL));
+    int deck[52] = {
+        2,3,4,5,6,7,8,9,10,10,10,10,11,
+        2,3,4,5,6,7,8,9,10,10,10,10,11,
+        2,3,4,5,6,7,8,9,10,10,10,10,11,
+        2,3,4,5,6,7,8,9,10,10,10,10,11
+    };
+    int pcCards[10];
+    int userCards[10];
+    int userCardIndex = 0;
+    int pcCardIndex = 0;
+    int cardIndex = 0;
+    int userSum = 0;
+    int pcSum = 0;
+    int userAce = 0;
+    int pcAce = 0;
+ 
+    shuffle(deck);
+
+    printf("Welcome to the 21 GAME\n");
+    printf("_________________________\n");
+    playerHit(pcCards, &pcCardIndex, deck, &cardIndex);
+    playerHit(userCards, &userCardIndex, deck, &cardIndex);
+
+    playerHit(pcCards, &pcCardIndex, deck, &cardIndex);
+    playerHit(userCards, &userCardIndex, deck, &cardIndex);
+
+    totalPoints(pcCards, pcCardIndex, &pcSum);
+    totalPoints(userCards, userCardIndex, &userSum);
+
+
+    while(userSum < 21 && pcSum < 21){
+        int userChoice;
+        while(1){
+            printf("Opponent Card(s): ");
+            semiRevealCards(pcCardIndex, pcCards);
+
+            printf("Your card(s): ");
+            fullyRevealCards(userCardIndex, userCards);
+
+            printf("Choose your move:\nHit:0 Pass:1\nYour Move: ");
+            if(scanf("%d", &userChoice) == 1 && (userChoice == 0 || userChoice == 1)){
+            break;
+            }
+            printf("Invalid Input! Please enter a valid number!\n");
+        }
+        
+        if(userChoice == 0){
+            printf("_________________________\n");
+            playerHit(userCards, &userCardIndex, deck, &cardIndex);
+            printf("You drawed %d \n", userCards[userCardIndex -1 ]);
+            printf("_________________________\n");
+            totalPoints(userCards, userCardIndex, &userSum);
+            if(userSum > 21){
+                checkAce(userCardIndex, userCards, &userAce);
+                totalPoints(userCards, userCardIndex, &userSum);
+            }
+            if(pcSum <= 17){
+                playerHit(pcCards, &pcCardIndex, deck, &cardIndex);
+                printf("Computer drawed %d \n", pcCards[pcCardIndex -1 ]);
+                printf("_________________________\n");
+                totalPoints(pcCards, pcCardIndex, &pcSum);
+                if(pcSum > 21){
+                    checkAce(pcCardIndex, pcCards, &pcAce);
+                    totalPoints(pcCards, pcCardIndex, &pcSum);   
+                }
+            }
+        }else if(userChoice == 1){
+            printf("\nYou Passed\n");
+            while(pcSum <= 17){
+                playerHit(pcCards, &pcCardIndex, deck, &cardIndex);
+                printf("Computer drawed %d \n", pcCards[pcCardIndex -1 ]);
+                printf("_________________________\n");
+                totalPoints(pcCards, pcCardIndex, &pcSum);
+                if(pcSum > 21){
+                    checkAce(pcCardIndex, pcCards, &pcAce);
+                    totalPoints(pcCards, pcCardIndex, &pcSum);  
+                }
+            }
+            break;
+        }
+        totalPoints(pcCards, pcCardIndex, &pcSum);
+        totalPoints(userCards, userCardIndex, &userSum);
+
+        
+    }
+    totalPoints(pcCards, pcCardIndex, &pcSum);
+    totalPoints(userCards, userCardIndex, &userSum);
+
+    printf("_________________________\n");
+    printf("      GAME ENDED!\n\n");
+
+    printf("Opponent Card(s): ");
+    fullyRevealCards(pcCardIndex, pcCards);   
+
+    printf("Your card(s): ");
+    fullyRevealCards(userCardIndex, userCards);
+
+    printf("Computer got %d points!!\nYou got %d points!!\n", pcSum, userSum);
+
+    if(userSum <= 21 && pcSum <= 21){
+        if(userSum == pcSum){
+            printf("Its a draw!\n");
+        }else if(userSum > pcSum){
+            printf("!!YOU WON!!\n");
+        }else{
+            printf("!!YOU LOST!!\n");
+        }
+    }else if(userSum <= 21 && pcSum > 21){
+        printf("!!YOU WON!!\n");
+    }else if(pcSum <= 21 && userSum > 21){
+        printf("!!YOU LOST!!\n");
+    }else if(pcSum > 21 && userSum > 21){
+        printf("!!YOU LOST!!\n");
+    }
+ 
+    return 0;
+}
+
+
+void playerHit(int playerCards[], int *playerCardIndex, int deck[], int *cardIndex){
+    playerCards[*playerCardIndex] = deck[*cardIndex];
+    (*cardIndex)++;
+    (*playerCardIndex)++;
+
+}
+
+void shuffle(int deck[]){
+    for(int i = 0; i<52; i++){
+        int j = (rand() % 52) ;
+        int temporary = deck[i];
+        deck[i] = deck[j];
+        deck[j] = temporary;
+    }
+}
+void totalPoints(int playerCards[], int playerCardIndex, int *playerSum){
+    *playerSum = 0;
+    for(int i=0; i<playerCardIndex ;i++){
+        (*playerSum) += playerCards[i];
+    }
+}
+
+void semiRevealCards(int playerCardIndex, int playerCards[]){
+    printf("? ");
+    for(int i = 1; i<playerCardIndex; i++){
+        printf("%d ", playerCards[i]);
+    }
+    printf("\n");
+    printf("\n");
+}
+
+void fullyRevealCards(int playerCardIndex, int playerCards[]){
+    for(int i = 0; i<playerCardIndex; i++){
+        printf("%d ", playerCards[i]);
+    }
+    printf("\n");
+    printf("\n");
+}
+
+void checkAce(int playerCardIndex, int playerCards[], int *playerAce){
+    for(int i=0; i< playerCardIndex; i++){
+        if(playerCards[i] == 11){
+            (*playerAce)++;
+            playerCards[i] -= 10;
+            break;
+        }
+    }
+}
