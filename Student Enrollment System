@@ -23,6 +23,7 @@ void setLetter(int ids, Student *list, int i);
 
 int main() {
     int howMany;
+    char invalid[20] = "Unassigned";
     while(1){
         printf("How many student will you enroll?: ");
         if(scanf("%d", &howMany)==1 && howMany > 0){
@@ -46,11 +47,12 @@ int main() {
         
     }
 
+
     for(int i = 0; i<howMany; i++){
         printf("_____STUDENTS_#%d___\n", i+1);
-        printf("Name: %s\n", list[i].name);
-        printf("Age: %d\n", list[i].age);
-        printf("ID: %d\n", list[i].id);
+        printf("Name:  %s\n", list[i].name);
+        printf("Age:   %d\n", list[i].age);
+        printf("ID:    %d\n", list[i].id);
         printf("Class: %c\n", list[i].letter + 'A');
         
     }
